@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeardHarder.Core", "BeardHarder.Core\BeardHarder.Core.csproj", "{B7E368E4-5C72-4BA0-8DD6-CD391199A83E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeardHarder.Console", "BeardHarder.Console\BeardHarder.Console.csproj", "{A24F8B90-7FCD-4DEB-A668-3E04BEE77530}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B7E368E4-5C72-4BA0-8DD6-CD391199A83E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7E368E4-5C72-4BA0-8DD6-CD391199A83E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7E368E4-5C72-4BA0-8DD6-CD391199A83E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7E368E4-5C72-4BA0-8DD6-CD391199A83E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A24F8B90-7FCD-4DEB-A668-3E04BEE77530}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A24F8B90-7FCD-4DEB-A668-3E04BEE77530}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A24F8B90-7FCD-4DEB-A668-3E04BEE77530}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A24F8B90-7FCD-4DEB-A668-3E04BEE77530}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
