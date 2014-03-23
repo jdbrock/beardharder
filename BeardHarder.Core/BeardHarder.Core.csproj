@@ -43,7 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.cs" />
-    <Compile Include="FailedTVEpisode.cs" />
+    <Compile Include="TVEpisode.cs" />
     <Compile Include="JsonClasses.cs" />
     <Compile Include="KnownMappings.cs" />
     <Compile Include="Matchers.cs" />

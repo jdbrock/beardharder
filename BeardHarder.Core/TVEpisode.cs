@@ -33,65 +33,63 @@ namespace BeardHarder.Core
 
         public static TVEpisode FromFileName(String inFileName, String inSabnzbdId)
         {
-            Match m = null;
+            Match match = null;
 
-            foreach (var pattern in RegexPatterns.EpisodeRegex)
+            foreach (var pattern in RegexPatterns.EpisodeRegexes)
             {
-                m = new Regex(pattern, RegexOptions.IgnoreCase).Match(inFileName);
+                match = new Regex(pattern, RegexOptions.IgnoreCase).Match(inFileName);
 
-                if (m.Success)
+                if (match.Success)
                     break;
             }
 
-            if (m == null || !m.Success)
+            if (match == null || !match.Success)
             {
                 Console.WriteLine("FAILED: Failed to parse " + inFileName + ", skipping...");
                 return null;
             }
 
-            var e = new TVEpisode
+            var episode = new TVEpisode
             {
-                ShowName = m.Groups["series_name"].Value.Replace(".", " "),
-                NamedByDate = m.Groups["air_year"].Success,
+                ShowName = match.Groups["series_name"].Value.Replace(".", " "),
+                NamedByDate = match.Groups["air_year"].Success,
                 SabnzbdId = inSabnzbdId
             };
 
-            if (e.NamedByDate)
+            if (episode.NamedByDate)
             {
                 try
                 {
-                    e.SeasonNumber = Int32.Parse(m.Groups["air_year"].Value);
-                    e.NamedDate = String.Join(".", m.Groups["air_year"].Value, m.Groups["air_month"].Value, m.Groups["air_day"].Value);
+                    episode.SeasonNumber = Int32.Parse(match.Groups["air_year"].Value);
+                    episode.NamedDate = String.Join(".", match.Groups["air_year"].Value, match.Groups["air_month"].Value, match.Groups["air_day"].Value);
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("EXCEPTION: " + e.Description + ", " + ex.ToString());
+                    Console.WriteLine("EXCEPTION: " + episode.Description + ", " + ex.ToString());
                     return null;
                 }
             }
             else
             {
-                if (String.IsNullOrWhiteSpace(m.Groups["ep_num"].Value))
+                if (String.IsNullOrWhiteSpace(match.Groups["ep_num"].Value))
                 {
-                    Console.WriteLine("FAILED: This is a full season pack, we don't know how to handle these at present. Skipping " + e.Description + "...");
+                    Console.WriteLine("FAILED: This is a full season pack, we don't know how to handle these at present. Skipping " + episode.Description + "...");
                     return null;
                 }
 
                 try
                 {
-                    e.SeasonNumber = Int32.Parse(m.Groups["season_num"].Value);
-                    e.EpisodeNumber = Int32.Parse(m.Groups["ep_num"].Value);
+                    episode.SeasonNumber = Int32.Parse(match.Groups["season_num"].Value);
+                    episode.EpisodeNumber = Int32.Parse(match.Groups["ep_num"].Value);
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("EXCEPTION: " + e.Description + ", " + ex.ToString());
+                    Console.WriteLine("EXCEPTION: " + episode.Description + ", " + ex.ToString());
                     return null;
                 }
             }
 
-            var x = e;
-
-            return e;
+            return episode;
         }
 
     }

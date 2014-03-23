@@ -8,7 +8,7 @@ namespace BeardHarder.Core
 {
     public static class RegexPatterns
     {
-        public static String[] EpisodeRegex = new[] {
+        public static String[] EpisodeRegexes = new[] {
 
             @"^(?<series_name>.+?)[. _-]+" +  
             @"s(?<season_num>[0-9]+)[. _-]?" +              
