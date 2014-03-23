@@ -23,7 +23,10 @@ namespace BeardHarder.Core
             { "NTSF SD SUV", "NTSF:SD:SUV::" },
             { "Law and Order SVU", "Law & Order: Special Victims Unit" },
             { "Marvels Agents of S H I E L D", "Marvel's Agents of S.H.I.E.L.D." },
-            { "Charlie Brookers Weekly Wipe", "Charlie Brooker's Weekly Wipe" }
+            { "Charlie Brookers Weekly Wipe", "Charlie Brooker's Weekly Wipe" },
+            { "Jimmy Fallon", "Late Night with Jimmy Fallon" },
+            { "Seth Meyers", "Late Night with Seth Meyers" },
+            { "The Daily Show", "The Daily Show with Jon Stewart" }
         };
     }
 }

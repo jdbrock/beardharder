@@ -35,6 +35,9 @@ namespace BeardHarder.Core
         {
             Match match = null;
 
+            if (inFileName.StartsWith("http"))
+                return null;
+
             foreach (var pattern in RegexPatterns.EpisodeRegexes)
             {
                 match = new Regex(pattern, RegexOptions.IgnoreCase).Match(inFileName);

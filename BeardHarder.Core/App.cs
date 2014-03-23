@@ -60,7 +60,7 @@ namespace BeardHarder.Core
             // Find failed items in SickBeard.
             foreach (var failedItem in failed)
             {
-                if (failedItem.SeasonNumber == 0 || failedItem.EpisodeNumber == 0)
+                if (!failedItem.NamedByDate && (failedItem.SeasonNumber == 0 || failedItem.EpisodeNumber == 0))
                 {
                     Console.WriteLine("FAILED: Season and episode number must be non-zero for " + failedItem.Description + ", skipping...");
                     continue;
@@ -81,15 +81,15 @@ namespace BeardHarder.Core
                     continue;
                 }
 
-                Int32 seasonNumber;
-                Int32 episodeNumber;
+                Int32 seasonNumber = 0;
+                Int32 episodeNumber = 0;
 
                 if (failedItem.NamedByDate)
                 {
                     var episodesRequest = new RestRequest();
                     episodesRequest.AddParameter("cmd", "show.seasons");
                     episodesRequest.AddParameter("tvdbid", showId);
-                    episodesRequest.AddParameter("season", failedItem.SeasonNumber);
+                    //episodesRequest.AddParameter("season", failedItem.SeasonNumber);
 
                     var episodes = sickbeardClient.Execute<EpisodesRequest>(episodesRequest);
 
@@ -99,18 +99,28 @@ namespace BeardHarder.Core
                         continue;
                     }
 
-                    var episodesFiltered = episodes.Data.data.Where(X => X.Value.airdate == failedItem.NamedDate.Replace(".", "-"));
+                    AirByDateEpisode episode = null;
 
-                    if (!episodesFiltered.Any())
+                    foreach (var season in episodes.Data.data)
+                    {
+                        foreach (var ep in season.Value)
+                            if (ep.Value.airdate == failedItem.NamedDate.Replace(".", "-"))
+                            {
+                                episode = ep.Value;
+                                seasonNumber = Int32.Parse(season.Key);
+                                episodeNumber = Int32.Parse(ep.Key);
+                                break;
+                            }
+
+                        if (episode != null)
+                            break;
+                    }
+
+                    if (episode == null)
                     {
                         Console.WriteLine("FAILED: Couldn't find episode number for " + failedItem.Description + ", skipping...");
                         continue;
                     }
-
-                    var episode = episodesFiltered.First();
-
-                    seasonNumber = failedItem.SeasonNumber;
-                    episodeNumber = Int32.Parse(episode.Key);
                 }
                 else
                 {

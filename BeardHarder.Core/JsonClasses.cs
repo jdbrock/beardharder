@@ -158,7 +158,7 @@ namespace BeardHarder.Core
 
     public class EpisodesRequest
     {
-        public Dictionary<String, AirByDateEpisode> data { get; set; }
+        public Dictionary<String, Dictionary<String, AirByDateEpisode>> data { get; set; }
         public string message { get; set; }
         public string result { get; set; }
     }
