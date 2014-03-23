@@ -45,6 +45,8 @@
     <Compile Include="App.cs" />
     <Compile Include="FailedTVEpisode.cs" />
     <Compile Include="JsonClasses.cs" />
+    <Compile Include="KnownMappings.cs" />
+    <Compile Include="Matchers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegexPatterns.cs" />
   </ItemGroup>
