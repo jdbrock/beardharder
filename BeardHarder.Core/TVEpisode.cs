@@ -29,6 +29,8 @@ namespace BeardHarder.Core
 
         public String SabnzbdId { get; private set; }
 
+        public String OriginalFileName { get; private set; }
+
         private TVEpisode() { }
 
         public static TVEpisode FromFileName(String inFileName, String inSabnzbdId)
@@ -91,6 +93,8 @@ namespace BeardHarder.Core
                     return null;
                 }
             }
+
+            episode.OriginalFileName = inFileName;
 
             return episode;
         }

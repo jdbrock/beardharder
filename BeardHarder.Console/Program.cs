@@ -15,6 +15,9 @@ namespace BeardHarder.Console
             var app = new App();
             var lastSabnzbdRestart = DateTime.MinValue;
 
+            if (args.Length >= 1 && args[0] == "restart")
+                app.RestartSabnzbd();
+
             while (true)
             {
                 System.Console.WriteLine("Looking for failed episodes...");
@@ -27,7 +30,7 @@ namespace BeardHarder.Console
 
                 Thread.Sleep(1000 * 60 * 30);
 
-                if (lastSabnzbdRestart.AddHours(4) < DateTime.Now)
+                if (lastSabnzbdRestart.AddHours(1) < DateTime.Now)
                 {
                     System.Console.WriteLine("Restarting SABnzbd to fix bug with hung jobs...");
 

@@ -19,6 +19,8 @@ namespace BeardHarder.Core
 
         public void RetryFailedEpisodes()
         {
+            RetryData.Load();
+
             var sabnzbdClient = new RestClient(SABNZBD_URI);
             sabnzbdClient.AddDefaultParameter("apikey", SABNZBD_APIKEY);
             sabnzbdClient.AddDefaultParameter("output", "json");
@@ -32,6 +34,12 @@ namespace BeardHarder.Core
             historyRequest.AddParameter("limit", SABNZBD_HISTORY_LIMIT);
 
             var history = sabnzbdClient.Execute<HistoryRequest>(historyRequest);
+
+            if (history.Data == null)
+            {
+                Console.WriteLine("FAILED: SABnzbd history request failed.");
+                return;
+            }
 
             // Filter for failed items.
             var failedRaw = history.Data.history.slots
@@ -55,11 +63,24 @@ namespace BeardHarder.Core
             showsRequest.AddParameter("cmd", "shows");
 
             var showsRaw = sickbeardClient.Execute<ShowsRequest>(showsRequest);
+
+            if (showsRaw == null || showsRaw.Data == null || showsRaw.Data.data == null)
+            {
+                Console.WriteLine("FAILED: SickBeard shows request failed.");
+                return;
+            }
+
             var shows = showsRaw.Data.data;
 
             // Find failed items in SickBeard.
             foreach (var failedItem in failed)
             {
+                if (RetryData.ExceedsLimit(5, failedItem.OriginalFileName))
+                {
+                    Console.WriteLine("FAILED: Exceeded retry limit of 5 for " + failedItem.OriginalFileName + " (" + failedItem.Description + ")");
+                    continue;
+                }
+
                 if (!failedItem.NamedByDate && (failedItem.SeasonNumber == 0 || failedItem.EpisodeNumber == 0))
                 {
                     Console.WriteLine("FAILED: Season and episode number must be non-zero for " + failedItem.Description + ", skipping...");
@@ -160,6 +181,7 @@ namespace BeardHarder.Core
                     }
 
                     Console.WriteLine("SUCCESS: Retried " + failedItem.Description);
+                    RetryData.Increment(failedItem.OriginalFileName);
                 }
                 else
                 {
@@ -177,6 +199,8 @@ namespace BeardHarder.Core
 
                 Console.WriteLine("SUCCESS: Removed old SAB history entry for " + failedItem.Description);
             }
+
+            RetryData.Save();
         }
 
         public void RestartSabnzbd()
